@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:wallet_app/src/features/wallet_page.dart';
 import 'package:wallet_app/src/res/app_constants.dart';
 import 'package:wallet_app/src/res/app_icons.dart';
 import 'package:wallet_app/src/res/app_textstyles.dart';
@@ -66,7 +67,9 @@ class HomePage extends StatelessWidget{
                           Text("My Wallet", style: AppTextStyles.regularTextStyle.copyWith(color: Colors.white),),
                           CircleAvatar(
                             backgroundColor: Colors.white,
-                            child: Center(child: IconButton(onPressed: (){}, icon: Icon(Icons.arrow_forward_sharp,)),),
+                            child: Center(child: IconButton(onPressed: (){
+                              Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=> WalletPage()));
+                            }, icon: Icon(Icons.arrow_forward_sharp,)),),
                           )
                         ],
                       )
