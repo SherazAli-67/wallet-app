@@ -4,6 +4,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wallet_app/src/app_data.dart';
+import 'package:wallet_app/src/features/about_developer_page.dart';
+import 'package:wallet_app/src/features/savings_page.dart';
 import 'package:wallet_app/src/features/wallet_page.dart';
 import 'package:wallet_app/src/models/earning_model.dart';
 import 'package:wallet_app/src/models/savings_model.dart';
@@ -30,9 +32,14 @@ class HomePage extends StatelessWidget{
                 Row(
                   spacing: 20,
                   children: [
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundImage: CachedNetworkImageProvider(profileUrl),
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=> AboutDevPage()));
+                      },
+                      child: CircleAvatar(
+                        radius: 30,
+                        backgroundImage: CachedNetworkImageProvider(profileUrl),
+                      ),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,7 +63,7 @@ class HomePage extends StatelessWidget{
                       child: SvgPicture.asset(AppIcons.icCard, fit: BoxFit.cover,)),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     spacing: 5,
@@ -181,11 +188,13 @@ class HomePage extends StatelessWidget{
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Savings", style: AppTextStyles.headingTextStyle,),
-                TextButton(onPressed: (){}, child: Text("See All", style: AppTextStyles.regularTextStyle.copyWith(color: Colors.blue, fontWeight: FontWeight.w600),))
+                TextButton(onPressed: (){
+                  Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=> SavingsPage()));
+                }, child: Text("See All", style: AppTextStyles.regularTextStyle.copyWith(color: Colors.blue, fontWeight: FontWeight.w600),))
               ],
             ),
             SizedBox(
-              height: size.height*0.3,
+              height: size.height*0.29,
               child: GridView.builder(
                   itemCount: AppData.savings.length,
                   physics: NeverScrollableScrollPhysics(),
@@ -225,7 +234,6 @@ class HomePage extends StatelessWidget{
                               return Container(
                                 width: 300,
                                 height: 10,
-                                margin: EdgeInsets.only(top: 5),
                                 decoration: BoxDecoration(
                                   color: Colors.grey[300],
                                   borderRadius: BorderRadius.circular(5),

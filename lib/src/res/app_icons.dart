@@ -6,5 +6,10 @@ class AppIcons {
   static const icStatCard = 'assets/icons/ic_stat_card.svg';
   static const icCardLogo = 'assets/icons/ic_card_logo.svg';
   static const icFilter = 'assets/icons/ic_filter.svg';
+  static const icCar = 'assets/icons/car.svg';
+  static const icBuilding = 'assets/icons/courthouse.svg';
+  static const icHouse = 'assets/icons/house.svg';
+  static const icMobile = 'assets/icons/mobile.svg';
+
 
 }
