@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:wallet_app/src/app_data.dart';
 import 'package:wallet_app/src/res/app_constants.dart';
 import 'package:wallet_app/src/res/app_icons.dart';
 import 'package:wallet_app/src/res/app_textstyles.dart';
@@ -27,7 +30,7 @@ class WalletPage extends StatelessWidget{
       ),
       backgroundColor: Color(0xffF3F3F3),
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(10),
           child: Column(
             spacing: 20,
@@ -132,6 +135,85 @@ class WalletPage extends StatelessWidget{
                   Text("Transactions", style: AppTextStyles.headingTextStyle,),
                   IconButton(onPressed: null, icon: SvgPicture.asset(AppIcons.icFilter))
                 ],
+              ),
+              Column(
+                children: AppData.transactions.map((transaction){
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 15.0),
+                    child: ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)
+                      ),
+                      tileColor: Colors.white,
+                      leading: CircleAvatar(
+                        backgroundColor: transaction.color.withOpacity(0.4),
+                        child: Center(
+                          child: Icon(transaction.icon, color: transaction.color,),
+                        ),
+                      ),
+                      title: Text(transaction.title, style: AppTextStyles.titleTextStyle,),
+                      subtitle: Text(transaction.subTitle, style: AppTextStyles.regularTextStyle,),
+                      trailing: TextButton(onPressed: null, child: Text(transaction.amount.toStringAsFixed(2), style: AppTextStyles.titleTextStyle.copyWith(color: Colors.red),)),
+                    ),
+                  );
+                }).toList(),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Savings", style: AppTextStyles.headingTextStyle,),
+                  IconButton(onPressed: null, icon: SvgPicture.asset(AppIcons.icFilter))
+                ],
+              ),
+              Column(
+                children: AppData.savings.map((saving){
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 15.0),
+                    child: ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)
+                      ),
+                      tileColor: Colors.white,
+                      leading: CircleAvatar(
+                        backgroundColor: saving.color.withOpacity(0.4),
+                        child: Center(
+                          child: Icon(saving.icon, color: saving.color,),
+                        ),
+                      ),
+                      title: Text(saving.title, style: AppTextStyles.titleTextStyle,),
+                      subtitle: TweenAnimationBuilder(
+                        tween: Tween<double>(begin: 0.0, end: progressValue(saving.target, saving.savings)),
+                        duration: Duration(seconds: 2),
+                        builder: (context, double value, child) {
+                          return Container(
+                            width: 300,
+                            height: 10,
+                            margin: EdgeInsets.only(top: 5),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Container(
+                                width: value * 300, // Adjust width based on progress
+                                height: 10,
+                                decoration: BoxDecoration(
+                                  color: saving.color,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      // subtitle: Text('${progressValue(saving.target, saving.savings)}', style: AppTextStyles.regularTextStyle,),
+                      trailing: TextButton(onPressed: null, child: Text(saving.savings.toStringAsFixed(2), style: AppTextStyles.titleTextStyle,)),
+                    ),
+                  );
+                }).toList(),
               )
             ],
           ),
@@ -140,6 +222,27 @@ class WalletPage extends StatelessWidget{
     );
   }
 
+  Color get randomColor {
+    List<Color> colors = [
+      Colors.blue,
+      Colors.redAccent,
+      Colors.green,
+      Colors.amber,
+      Colors.cyan,
+      Colors.blueGrey,
+      Colors.tealAccent
+    ];
+
+    int randomIndex = Random().nextInt(colors.length);
+
+    return colors[randomIndex];
+  }
+
+  double progressValue(double target, double achieved) {
+    double percent = (achieved/target);
+    debugPrint("Percent: $percent");
+    return percent;
+  }
 }
 
 class DashedBorderPainter extends CustomPainter {
